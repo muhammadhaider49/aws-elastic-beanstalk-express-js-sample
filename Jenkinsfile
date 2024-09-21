@@ -1,19 +1,18 @@
 pipeline {
     agent {
         docker {
-            image 'node:16'  // Use Node.js 16 Docker image as the build agent
-            label 'docker'
+            image 'node:16'
         }
     }
     environment {
-        SNYK_TOKEN = credentials('SNYK_TOKEN')  // Use the Snyk token stored in Jenkins credentials
+        SNYK_TOKEN = credentials('SNYK_TOKEN')  // Access the Snyk token stored in Jenkins credentials
     }
     stages {
         stage('Install Dependencies') {
             steps {
                 script {
                     echo 'Installing dependencies...'
-                    sh 'npm install --save'  // Install project dependencies
+                    sh 'npm install --save'
                 }
             }
         }
@@ -30,7 +29,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building the application...'
-                    sh 'npm run build'  // Build the application
+                    sh 'npm run build'
                 }
             }
         }
@@ -38,7 +37,7 @@ pipeline {
             steps {
                 script {
                     echo 'Running tests...'
-                    sh 'npm test'  // Run application tests
+                    sh 'npm test'
                 }
             }
         }
