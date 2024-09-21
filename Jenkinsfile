@@ -2,10 +2,11 @@ pipeline {
     agent {
         docker {
             image 'node:16'
+            label 'docker'
         }
     }
     environment {
-        SNYK_TOKEN = credentials('SNYK_TOKEN')  // Access the Snyk token stored in Jenkins credentials
+        SNYK_TOKEN = credentials('SNYK_TOKEN')  // Use the Snyk token stored in Jenkins credentials
     }
     stages {
         stage('Install Dependencies') {
@@ -13,6 +14,14 @@ pipeline {
                 script {
                     echo 'Installing dependencies...'
                     sh 'npm install --save'
+                }
+            }
+        }
+        stage('Install Snyk') {
+            steps {
+                script {
+                    echo 'Installing Snyk...'
+                    sh 'npm install -g snyk'  // Install Snyk globally in the container
                 }
             }
         }
@@ -29,7 +38,7 @@ pipeline {
             steps {
                 script {
                     echo 'Building the application...'
-                    sh 'npm run build'
+                    sh 'npm run build'  // Build the application
                 }
             }
         }
@@ -37,7 +46,7 @@ pipeline {
             steps {
                 script {
                     echo 'Running tests...'
-                    sh 'npm test'
+                    sh 'npm test'  // Run application tests
                 }
             }
         }
